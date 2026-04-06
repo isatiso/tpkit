@@ -1,5 +1,11 @@
 # tpkit
 
+## 0.6.1
+
+### Patch Changes
+
+- 25ae740: Pin dependency versions to patch range (~) for more predictable builds.
+
 ## 0.6.0
 
 ### Minor Changes
