@@ -133,13 +133,22 @@ pnpm build          # build once
 pnpm dev            # watch mode
 ```
 
-## Publish
+## Release
+
+Uses [changesets](https://github.com/changesets/changesets) for version management.
 
 ```bash
-pnpm release        # build + npm publish
-pnpm release:patch  # bump patch + publish
-pnpm release:minor  # bump minor + publish
-pnpm release:major  # bump major + publish
+# 1. After making changes, add a changeset
+pnpm changeset
+
+# 2. Commit the changeset file along with your code changes
+git add -A && git commit -m "feat: ..."
+
+# 3. Push to main
+git push
+
+# 4. Go to GitHub Actions → Publish → Run workflow
+#    This will: apply changesets → bump version → build → npm publish → push tags
 ```
 
 ## License
