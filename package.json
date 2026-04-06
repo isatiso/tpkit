@@ -8,6 +8,10 @@
     "bin": {
         "tpkit": "./dist/index.js"
     },
+    "exports": {
+        ".": "./dist/index.js",
+        "./cli": "./dist/cli.js"
+    },
     "files": [
         "dist",
         "LICENSE"
@@ -17,7 +21,9 @@
         "dev": "tsup --watch",
         "prepublishOnly": "pnpm build",
         "version": "changeset version",
-        "publish:ci": "pnpm build && npm publish --access public"
+        "publish:ci": "pnpm build && npm publish --access public",
+        "tpkit": "node dist/index.js",
+        "sync": "node dist/index.js agent sync"
     },
     "dependencies": {
         "chalk": "^5.4.1",

@@ -1,3 +1,4 @@
+import { execSync } from 'node:child_process'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
@@ -7,6 +8,16 @@ import { DEFAULT_STORE_PATH } from '../types.js'
 import { get_completion_script } from './completion.js'
 
 const COMPLETION_MARKER = '# tpkit shell completion'
+
+function is_global_installed(): boolean {
+    try {
+        const bin = execSync('which tpkit', { encoding: 'utf-8' }).trim()
+        // node_modules/.bin/ means local, not global
+        return !!bin && !bin.includes('node_modules')
+    } catch {
+        return false
+    }
+}
 
 function install_completion(): void {
     const shell = path.basename(process.env.SHELL || 'zsh')
@@ -37,6 +48,14 @@ export async function cmd_init(url: string): Promise<void> {
 
     await clone_store(url, store_path)
     save_config({ store_url: url, store_path })
-    install_completion()
-    console.log(chalk.green(`\n✓ Initialized tpkit with store at ${store_path}`))
+
+    if (is_global_installed()) {
+        install_completion()
+        console.log(chalk.green(`\n✓ Initialized tpkit with store at ${store_path}`))
+        console.log(chalk.cyan('  Run `source ~/.zshrc` or restart your terminal to enable tab completion.'))
+    } else {
+        console.log(chalk.green(`\n✓ Initialized tpkit with store at ${store_path}`))
+        console.log(chalk.yellow('\n  tpkit is not installed globally. To enable the `tpkit` command and shell completion:'))
+        console.log(chalk.cyan('  npm i -g @tarpit/tpkit'))
+    }
 }
