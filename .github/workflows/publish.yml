@@ -23,12 +23,26 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: Check if version already published
+        id: check
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          PUBLISHED=$(npm view @tarpit/tpkit@$VERSION version 2>/dev/null || true)
+          if [ "$PUBLISHED" = "$VERSION" ]; then
+            echo "Version $VERSION already published, skipping."
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Build and publish
+        if: steps.check.outputs.skip != 'true'
         run: pnpm run publish:ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Tag release
+        if: steps.check.outputs.skip != 'true'
         run: |
           VERSION=$(node -p "require('./package.json').version")
           git config user.name "github-actions[bot]"
