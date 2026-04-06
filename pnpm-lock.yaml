@@ -9,16 +9,16 @@ importers:
   .:
     dependencies:
       chalk:
-        specifier: ^5.4.1
-        version: 5.6.2
+        specifier: ~5.4.1
+        version: 5.4.1
       commander:
-        specifier: ^13.1.0
+        specifier: ~13.1.0
         version: 13.1.0
       simple-git:
-        specifier: ^3.27.0
-        version: 3.33.0
+        specifier: ~3.27.0
+        version: 3.27.0
       yaml:
-        specifier: ^2.8.3
+        specifier: ~2.8.3
         version: 2.8.3
     devDependencies:
       '@changesets/cli':
@@ -475,8 +475,8 @@ packages:
     resolution: {integrity: sha512-b6Ilus+c3RrdDk+JhLKUAQfzzgLEPy6wcXqS7f/xe1EETvsDP6GORG7SFuOs6cID5YkqchW/LXZbX5bc8j7ZcQ==}
     engines: {node: '>=8'}
 
-  chalk@5.6.2:
-    resolution: {integrity: sha512-7NzBL0rN6fMUW+f7A6Io4h40qQlG+xGmtMxfbnH/K7TAtt8JQWVQK+6g0UXKMeVJoyV5EkkNsErQ8pVD3bLHbA==}
+  chalk@5.4.1:
+    resolution: {integrity: sha512-zgVZuo2WcZgfUEmsn6eO3kINexW8RAE4maiQ8QNs8CtpPCSyMiYsULR3HQYkm3w8FIA3SberyMJMSldGsW+U3w==}
     engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
 
   chardet@2.1.1:
@@ -822,8 +822,8 @@ packages:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
 
-  simple-git@3.33.0:
-    resolution: {integrity: sha512-D4V/tGC2sjsoNhoMybKyGoE+v8A60hRawKQ1iFRA1zwuDgGZCBJ4ByOzZ5J8joBbi4Oam0qiPH+GhzmSBwbJng==}
+  simple-git@3.27.0:
+    resolution: {integrity: sha512-ivHoFS9Yi9GY49ogc6/YAi3Fl9ROnF4VyubNylgCkA+RVqLaKWnDSzXOVzya8csELIaWaYNutsEuAhZrtOjozA==}
 
   slash@3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
@@ -1321,7 +1321,7 @@ snapshots:
 
   cac@6.7.14: {}
 
-  chalk@5.6.2: {}
+  chalk@5.4.1: {}
 
   chardet@2.1.1: {}
 
@@ -1651,7 +1651,7 @@ snapshots:
 
   signal-exit@4.1.0: {}
 
-  simple-git@3.33.0:
+  simple-git@3.27.0:
     dependencies:
       '@kwsites/file-exists': 1.1.1
       '@kwsites/promise-deferred': 1.1.1
