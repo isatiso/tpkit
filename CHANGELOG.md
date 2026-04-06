@@ -1,5 +1,13 @@
 # tpkit
 
+## 0.5.1
+
+### Patch Changes
+
+- ae60b1f: Fix zsh completion error on shell startup.
+
+  - Replace direct `_tpkit` call with `compdef _tpkit tpkit` to register completion correctly
+
 ## 0.5.0
 
 ### Minor Changes
