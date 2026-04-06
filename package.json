@@ -1,0 +1,39 @@
+{
+    "name": "tpkit",
+    "version": "0.1.0",
+    "description": "CLI tool for managing AI agent configs and devcontainer environments",
+    "author": "Cao Jiahang <sieglive@gmail.com>",
+    "license": "MIT",
+    "type": "module",
+    "bin": {
+        "tpkit": "./dist/index.js"
+    },
+    "files": [
+        "dist",
+        "LICENSE"
+    ],
+    "scripts": {
+        "build": "tsup",
+        "dev": "tsup --watch",
+        "prepublishOnly": "pnpm build",
+        "release": "pnpm build && npm publish --access public",
+        "release:patch": "npm version patch && pnpm release",
+        "release:minor": "npm version minor && pnpm release",
+        "release:major": "npm version major && pnpm release"
+    },
+    "dependencies": {
+        "chalk": "^5.4.1",
+        "commander": "^13.1.0",
+        "handlebars": "^4.7.8",
+        "simple-git": "^3.27.0",
+        "yaml": "^2.7.1"
+    },
+    "devDependencies": {
+        "@types/node": "^22.15.3",
+        "tsup": "^8.5.0",
+        "typescript": "~5.9.2"
+    },
+    "engines": {
+        "node": ">=22"
+    }
+}
