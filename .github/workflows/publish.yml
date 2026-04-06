@@ -23,28 +23,33 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Check if version already published
+      - name: Check publish and tag status
         id: check
         run: |
           VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
           PUBLISHED=$(npm view @tarpit/tpkit@$VERSION version 2>/dev/null || true)
           if [ "$PUBLISHED" = "$VERSION" ]; then
-            echo "Version $VERSION already published, skipping."
-            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "skip_publish=true" >> $GITHUB_OUTPUT
           else
-            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "skip_publish=false" >> $GITHUB_OUTPUT
+          fi
+          if git ls-remote --tags origin "refs/tags/v$VERSION" | grep -q "v$VERSION"; then
+            echo "skip_tag=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip_tag=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Build and publish
-        if: steps.check.outputs.skip != 'true'
+        if: steps.check.outputs.skip_publish != 'true'
         run: pnpm run publish:ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Tag release
-        if: steps.check.outputs.skip != 'true'
+        if: steps.check.outputs.skip_tag != 'true'
         run: |
-          VERSION=$(node -p "require('./package.json').version")
+          VERSION=${{ steps.check.outputs.version }}
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git tag "v$VERSION"
