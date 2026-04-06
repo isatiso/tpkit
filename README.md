@@ -62,11 +62,9 @@ store/
 ├── rules/                      # Always-loaded project instructions
 │   ├── base.md                 # Shared across all projects
 │   └── <project>.md            # Project-specific rules
-├── skills/                     # On-demand commands, per-tool versions
+├── skills/                     # On-demand commands
 │   └── <skill>/
-│       ├── claude.md
-│       ├── codex.md
-│       └── factory.md
+│       └── skill.md            # Synced to all AI tools
 └── factory/
     └── settings.json           # Factory Droid configuration
 ```

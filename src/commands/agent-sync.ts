@@ -31,23 +31,15 @@ function sync_skills(store_path: string, project_dir: string): void {
         const skill_dir = path.join(skills_dir, skill_name)
         if (!fs.statSync(skill_dir).isDirectory()) continue
 
+        const src = path.join(skill_dir, 'skill.md')
+        if (!fs.existsSync(src)) continue
+
         // Claude Code
-        const claude_src = path.join(skill_dir, 'claude.md')
-        if (fs.existsSync(claude_src)) {
-            copy_file(claude_src, path.join(project_dir, '.claude', 'commands', `${skill_name}.md`))
-        }
-
+        copy_file(src, path.join(project_dir, '.claude', 'commands', `${skill_name}.md`))
         // Codex
-        const codex_src = path.join(skill_dir, 'codex.md')
-        if (fs.existsSync(codex_src)) {
-            copy_file(codex_src, path.join(project_dir, '.codex', 'skills', skill_name, 'SKILL.md'))
-        }
-
+        copy_file(src, path.join(project_dir, '.codex', 'skills', skill_name, 'SKILL.md'))
         // Factory
-        const factory_src = path.join(skill_dir, 'factory.md')
-        if (fs.existsSync(factory_src)) {
-            copy_file(factory_src, path.join(project_dir, '.factory', 'skills', skill_name, 'SKILL.md'))
-        }
+        copy_file(src, path.join(project_dir, '.factory', 'skills', skill_name, 'SKILL.md'))
     }
 }
 
