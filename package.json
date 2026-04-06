@@ -17,7 +17,7 @@
         "dev": "tsup --watch",
         "prepublishOnly": "pnpm build",
         "version": "changeset version",
-        "publish:ci": "pnpm build && changeset publish"
+        "publish:ci": "pnpm build && npm publish --access public"
     },
     "dependencies": {
         "chalk": "^5.4.1",
