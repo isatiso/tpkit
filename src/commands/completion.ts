@@ -60,7 +60,7 @@ _tpkit() {
     esac
 }
 
-_tpkit
+compdef _tpkit tpkit
 `.trim()
 
 const BASH_COMPLETION = `
