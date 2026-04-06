@@ -1,13 +1,16 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import chalk from 'chalk'
-import { load_profile, resolve_project_name } from '../lib/profile.js'
 import { pull_store, resolve_store_file } from '../lib/store.js'
 import { copy_file, write_file } from '../lib/sync.js'
 
-function concat_rules(store_path: string, project_rules: string): string {
+function resolve_project_name(project?: string): string {
+    return project || path.basename(process.cwd())
+}
+
+function concat_rules(store_path: string, project: string): string {
     const base_path = path.join(store_path, 'rules', 'base.md')
-    const project_path = path.join(store_path, 'rules', `${project_rules}.md`)
+    const project_path = path.join(store_path, 'rules', `${project}.md`)
 
     let content = ''
     if (fs.existsSync(base_path)) {
@@ -59,7 +62,6 @@ export async function cmd_agent_sync(options: { project?: string }): Promise<voi
     await pull_store()
 
     const project = resolve_project_name(options.project)
-    const profile = load_profile(project)
     const store_path = resolve_store_file()
     const project_dir = process.cwd()
 
@@ -67,7 +69,7 @@ export async function cmd_agent_sync(options: { project?: string }): Promise<voi
 
     // Rules
     console.log(chalk.blue('\nRules:'))
-    const rules_content = concat_rules(store_path, profile.rules)
+    const rules_content = concat_rules(store_path, project)
     if (rules_content) {
         write_file(path.join(project_dir, 'CLAUDE.md'), rules_content)
         write_file(path.join(project_dir, 'AGENTS.md'), rules_content)

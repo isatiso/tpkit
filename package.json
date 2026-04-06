@@ -1,7 +1,7 @@
 {
     "name": "@tarpit/tpkit",
     "version": "0.2.0",
-    "description": "CLI tool for managing AI agent configs and devcontainer environments",
+    "description": "CLI tool for syncing AI agent rules and skills across projects",
     "author": "Cao Jiahang <sieglive@gmail.com>",
     "license": "MIT",
     "type": "module",
@@ -22,9 +22,8 @@
     "dependencies": {
         "chalk": "^5.4.1",
         "commander": "^13.1.0",
-        "handlebars": "^4.7.8",
         "simple-git": "^3.27.0",
-        "yaml": "^2.7.1"
+        "yaml": "^2.8.3"
     },
     "devDependencies": {
         "@changesets/cli": "^2.29.6",
