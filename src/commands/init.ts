@@ -36,7 +36,15 @@ function install_completion(): void {
     console.log(chalk.green(`✓ Shell completion added to ${rc_file}`))
 }
 
-export async function cmd_init(url: string): Promise<void> {
+export async function cmd_init(url?: string): Promise<void> {
+    const git_url = url || process.env.TPKIT_STORE_URL
+    if (!git_url) {
+        console.error(chalk.red('No git URL provided.'))
+        console.error(chalk.red('Usage: tpkit init <git-url> or set TPKIT_STORE_URL environment variable.'))
+        process.exitCode = 1
+        return
+    }
+
     ensure_tpkit_dir()
 
     const store_path = DEFAULT_STORE_PATH
@@ -46,8 +54,8 @@ export async function cmd_init(url: string): Promise<void> {
         return
     }
 
-    await clone_store(url, store_path)
-    save_config({ store_url: url, store_path })
+    await clone_store(git_url, store_path)
+    save_config({ store_url: git_url, store_path })
 
     if (is_global_installed()) {
         install_completion()

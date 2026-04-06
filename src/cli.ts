@@ -19,7 +19,7 @@ export function run(): void {
     program
         .command('init')
         .description('Initialize tpkit by cloning a private store repository')
-        .argument('<git-url>', 'Git URL of the private store repository')
+        .argument('[git-url]', 'Git URL of the private store repository (or set TPKIT_STORE_URL)')
         .action(cmd_init)
 
     program

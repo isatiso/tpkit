@@ -1,5 +1,14 @@
 # tpkit
 
+## 0.7.0
+
+### Minor Changes
+
+- Support `TPKIT_STORE_URL` environment variable for `tpkit init` and auto-tag releases in CI.
+
+  - Add `TPKIT_STORE_URL` env var as fallback for `tpkit init <git-url>`, making the git URL argument optional
+  - Auto-create and push a versioned git tag after npm publish in the publish workflow
+
 ## 0.6.1
 
 ### Patch Changes
