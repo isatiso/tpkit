@@ -1,7 +1,29 @@
 import fs from 'node:fs'
+import os from 'node:os'
+import path from 'node:path'
 import chalk from 'chalk'
 import { clone_store, ensure_tpkit_dir, save_config } from '../lib/store.js'
 import { DEFAULT_STORE_PATH } from '../types.js'
+import { get_completion_script } from './completion.js'
+
+const COMPLETION_MARKER = '# tpkit shell completion'
+
+function install_completion(): void {
+    const shell = path.basename(process.env.SHELL || 'zsh')
+    const script = get_completion_script(shell)
+    if (!script) return
+
+    const rc_file = shell === 'bash'
+        ? path.join(os.homedir(), '.bashrc')
+        : path.join(os.homedir(), '.zshrc')
+
+    const existing = fs.existsSync(rc_file) ? fs.readFileSync(rc_file, 'utf-8') : ''
+    if (existing.includes(COMPLETION_MARKER)) return
+
+    const block = `\n${COMPLETION_MARKER}\neval "$(tpkit completion ${shell})"\n`
+    fs.appendFileSync(rc_file, block)
+    console.log(chalk.green(`✓ Shell completion added to ${rc_file}`))
+}
 
 export async function cmd_init(url: string): Promise<void> {
     ensure_tpkit_dir()
@@ -15,5 +37,6 @@ export async function cmd_init(url: string): Promise<void> {
 
     await clone_store(url, store_path)
     save_config({ store_url: url, store_path })
+    install_completion()
     console.log(chalk.green(`\n✓ Initialized tpkit with store at ${store_path}`))
 }

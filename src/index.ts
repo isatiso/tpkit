@@ -4,6 +4,7 @@ import { cmd_cd } from './commands/cd.js'
 import { cmd_init } from './commands/init.js'
 import { cmd_list } from './commands/list.js'
 import { cmd_update } from './commands/update.js'
+import { register_completion } from './commands/completion.js'
 
 const program = new Command()
 
@@ -44,5 +45,7 @@ agent
     .option('-p, --project <name>', 'Project name (defaults to current directory name)')
     .option('--gitignore', 'Add synced paths to .gitignore')
     .action(cmd_agent_sync)
+
+register_completion(program)
 
 program.parse()
