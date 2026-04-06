@@ -1,6 +1,6 @@
 {
     "name": "@tarpit/tpkit",
-    "version": "0.5.1",
+    "version": "0.6.0",
     "description": "CLI tool for syncing AI agent rules and skills across projects",
     "author": "Cao Jiahang <sieglive@gmail.com>",
     "license": "MIT",
