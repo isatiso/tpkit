@@ -1,5 +1,16 @@
 # tpkit
 
+## 0.5.0
+
+### Minor Changes
+
+- Add shell completion and simplify publish workflow.
+
+  - Add `tpkit completion <shell>` command for zsh/bash tab completion
+  - Auto-install shell completion during `tpkit init`
+  - Simplify CI: remove changesets/action, run version locally before publish
+  - Replace `changeset publish` with direct `npm publish` in CI
+
 ## 0.4.0
 
 ### Minor Changes
