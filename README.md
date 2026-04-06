@@ -7,7 +7,7 @@ Keeps your rules, skills, env secrets, and devcontainer templates in a private G
 ## Install
 
 ```bash
-npm install -g tpkit
+npm install -g @tarpit/tpkit
 ```
 
 ## Quick Start

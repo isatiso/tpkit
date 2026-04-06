@@ -1,5 +1,5 @@
 {
-    "name": "tpkit",
+    "name": "@tarpit/tpkit",
     "version": "0.2.0",
     "description": "CLI tool for managing AI agent configs and devcontainer environments",
     "author": "Cao Jiahang <sieglive@gmail.com>",
