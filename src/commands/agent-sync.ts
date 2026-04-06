@@ -23,6 +23,31 @@ function concat_rules(store_path: string, project: string): string {
     return content
 }
 
+function merge_env(store_path: string, project: string): string {
+    const base_path = path.join(store_path, 'env', 'base.env')
+    const project_path = path.join(store_path, 'env', `${project}.env`)
+
+    const entries = new Map<string, string>()
+    const order: string[] = []
+
+    for (const file_path of [base_path, project_path]) {
+        if (!fs.existsSync(file_path)) continue
+        for (const line of fs.readFileSync(file_path, 'utf-8').split('\n')) {
+            const trimmed = line.trim()
+            if (!trimmed || trimmed.startsWith('#')) continue
+            const eq = line.indexOf('=')
+            if (eq === -1) continue
+            const key = line.slice(0, eq).trim()
+            const value = line.slice(eq + 1).trim()
+            if (!entries.has(key)) order.push(key)
+            entries.set(key, value)
+        }
+    }
+
+    if (entries.size === 0) return ''
+    return order.map(key => `${key}=${entries.get(key)}`).join('\n') + '\n'
+}
+
 function sync_skills(store_path: string, project_dir: string): void {
     const skills_dir = path.join(store_path, 'skills')
     if (!fs.existsSync(skills_dir)) return
@@ -50,7 +75,7 @@ function sync_factory_settings(store_path: string, project_dir: string): void {
     }
 }
 
-export async function cmd_agent_sync(options: { project?: string }): Promise<void> {
+export async function cmd_agent_sync(options: { project?: string, gitignore?: boolean }): Promise<void> {
     await pull_store()
 
     const project = resolve_project_name(options.project)
@@ -67,6 +92,15 @@ export async function cmd_agent_sync(options: { project?: string }): Promise<voi
         write_file(path.join(project_dir, 'AGENTS.md'), rules_content)
     }
 
+    // Env
+    console.log(chalk.blue('\nEnv:'))
+    const env_content = merge_env(store_path, project)
+    if (env_content) {
+        write_file(path.join(project_dir, '.env'), env_content)
+    } else {
+        console.log(chalk.gray('  No env files found'))
+    }
+
     // Skills
     console.log(chalk.blue('\nSkills:'))
     sync_skills(store_path, project_dir)
@@ -75,5 +109,48 @@ export async function cmd_agent_sync(options: { project?: string }): Promise<voi
     console.log(chalk.blue('\nFactory settings:'))
     sync_factory_settings(store_path, project_dir)
 
+    // Check .gitignore
+    check_gitignore(project_dir, options.gitignore)
+
     console.log(chalk.green('\n✓ Agent sync complete'))
+}
+
+const GITIGNORE_ENTRIES = [
+    '.env',
+    'CLAUDE.md',
+    'AGENTS.md',
+    '.claude/',
+    '.codex/',
+    '.factory/',
+]
+
+function check_gitignore(project_dir: string, auto_add?: boolean): void {
+    const gitignore_path = path.join(project_dir, '.gitignore')
+    const existing = fs.existsSync(gitignore_path)
+        ? fs.readFileSync(gitignore_path, 'utf-8')
+        : ''
+
+    const missing = GITIGNORE_ENTRIES.filter(entry => {
+        return !existing.split('\n').some(line => {
+            const trimmed = line.trim()
+            return trimmed === entry || trimmed === entry.replace(/\/$/, '')
+        })
+    })
+
+    if (missing.length === 0) return
+
+    if (auto_add) {
+        const block = '\n# AI agent configs (managed by tpkit)\n' + missing.join('\n') + '\n'
+        fs.appendFileSync(gitignore_path, block, 'utf-8')
+        console.log(chalk.blue('\nAdded to .gitignore:'))
+        for (const entry of missing) {
+            console.log(chalk.gray(`  ${entry}`))
+        }
+    } else {
+        console.log(chalk.yellow('\nThe following paths are not in .gitignore:'))
+        for (const entry of missing) {
+            console.log(chalk.yellow(`  ${entry}`))
+        }
+        console.log(chalk.gray('  Run with --gitignore to add them automatically'))
+    }
 }

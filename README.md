@@ -45,12 +45,16 @@ Open a shell in the store directory for editing.
 Sync AI agent configurations to the current project:
 
 - **Rules** — concatenates `rules/base.md` + `rules/<project>.md` → generates `CLAUDE.md` and `AGENTS.md`
-- **Skills** — distributes per-tool skill files to `.claude/commands/`, `.codex/skills/`, `.factory/skills/`
+- **Env** — merges `env/base.env` + `env/<project>.env` → generates `.env`
+- **Skills** — distributes skill files to `.claude/commands/`, `.codex/skills/`, `.factory/skills/`
 - **Factory settings** — copies `factory/settings.json` to `.factory/settings.json`
+
+Use `--gitignore` to automatically add synced paths to `.gitignore`.
 
 ```bash
 tpkit agent sync                # auto-detect project from cwd
 tpkit agent sync -p megaquant   # explicit project name
+tpkit agent sync --gitignore    # also update .gitignore
 ```
 
 ## Store Structure
@@ -62,6 +66,9 @@ store/
 ├── rules/                      # Always-loaded project instructions
 │   ├── base.md                 # Shared across all projects
 │   └── <project>.md            # Project-specific rules
+├── env/                        # Environment variables
+│   ├── base.env                # Shared across all projects
+│   └── <project>.env           # Project-specific (overrides base)
 ├── skills/                     # On-demand commands
 │   └── <skill>/
 │       └── skill.md            # Synced to all AI tools

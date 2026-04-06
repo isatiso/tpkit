@@ -10,7 +10,7 @@ const program = new Command()
 program
     .name('tpkit')
     .description('CLI tool for syncing AI agent rules and skills across projects')
-    .version('0.2.0')
+    .version(__VERSION__)
 
 program
     .command('init')
@@ -42,6 +42,7 @@ agent
     .command('sync')
     .description('Sync rules, skills, and factory settings to the current project')
     .option('-p, --project <name>', 'Project name (defaults to current directory name)')
+    .option('--gitignore', 'Add synced paths to .gitignore')
     .action(cmd_agent_sync)
 
 program.parse()

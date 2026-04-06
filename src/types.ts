@@ -1,3 +1,5 @@
+declare const __VERSION__: string
+
 export interface TpkitConfig {
     store_url: string
     store_path: string
