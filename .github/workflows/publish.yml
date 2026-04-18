@@ -2,10 +2,14 @@ name: Publish
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.head_commit.message, 'chore: release')
     permissions:
       contents: write
     steps:
