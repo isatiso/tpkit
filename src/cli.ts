@@ -44,9 +44,11 @@ export function run(): void {
 
     agent
         .command('sync')
-        .description('Sync rules, skills, and factory settings to the current project')
+        .description('Sync agent configs to the current project')
+        .argument('[targets...]', 'Agents to sync: claude, codex, factory, env (default: all)')
         .option('-p, --project <name>', 'Project name (defaults to current directory name)')
-        .option('--gitignore', 'Add synced paths to .gitignore')
+        .option('--gitignore', 'Add synced paths to .gitignore (only applies when syncing all)')
+        .option('--clean', 'Remove config files of agents not being synced')
         .action(cmd_agent_sync)
 
     register_completion(program)

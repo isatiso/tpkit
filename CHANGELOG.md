@@ -1,5 +1,18 @@
 # tpkit
 
+## 0.8.0
+
+### Minor Changes
+
+- Add per-agent sync targeting with multi-select and clean support.
+
+  - Add optional `[targets...]` argument to `agent sync` to sync specific agents: `claude`, `codex`, `factory`, `env`
+  - Support multiple targets in a single invocation (e.g. `agent sync claude factory`)
+  - Add `--clean` flag to remove config files of agents not being synced
+  - Always sync `.env` regardless of target
+  - Add `AGENTS.md` sync support for `factory` agent (shared with `codex`)
+  - Handle shared file cleanup correctly: `AGENTS.md` is only removed when both `codex` and `factory` are excluded
+
 ## 0.7.0
 
 ### Minor Changes
